@@ -7,6 +7,7 @@ import static cofre.ValidacaoHelper.*;
  * @author andreendo
  */
 public class CofrePM {
+
     private String display;
     private SensorPorta sensorPorta;
     private Memoria memoria;
@@ -18,7 +19,7 @@ public class CofrePM {
         display = "Entre com a senha 6 digitos";
         this.sensorPorta.destravar();
     }
-    
+
     public String getDisplay() {
         return display;
     }
@@ -26,49 +27,51 @@ public class CofrePM {
     public void setDisplay(String display) {
         this.display = display;
     }
-    
+
     public void ok() {
-        if(! sensorPorta.fechada())
+        if (!sensorPorta.fechada()) {
             display = "Feche a porta antes de digitar a senha";
-        else {
-            if(sensorPorta.travada()) 
+        } else {
+            if (sensorPorta.travada()) {
                 realizarAbertura();
-            else  
+            } else {
                 realizarFechamento();
+            }
         }
     }
 
     private void realizarFechamento() {
-        if(ehSenhaValida(display)) {
+        if (ehSenhaValida(display)) {
             memoria.salvarSenha(display);
             sensorPorta.travar();
             display = "Senha salva. Cofre trancado";
-        }
-        else 
+        } else {
             display = "senha precisa de 6 digitos. Tente novamente";
+        }
     }
 
     private void realizarAbertura() {
         String senhaSalva = memoria.getSenha();
-        if(senhaSalva.equals(display)) {
+        if (senhaSalva.equals(display)) {
             display = "senha correta. Cofre aberto";
             sensorPorta.destravar();
-        }
-        else
+        } else {
             display = "senha errada. Tente novamente";
+        }
     }
-    
+
     public void clear() {
         display = "";
     }
-    
+
     public void pressButton(int codigo) {
-        if(! sensorPorta.fechada())
+        if (!sensorPorta.fechada()) {
             display = "Feche a porta antes de digitar a senha";
-        else {
-            if(! ehNumero(display))
+        } else {
+            if (!ehNumero(display)) {
                 display = "";
-            
+            }
+
             display = display + String.valueOf(codigo);
         }
     }
